@@ -18,11 +18,10 @@
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
 
-                <%--<form:checkboxes items="${items}" path="selected"/>--%>
                 <c:forEach items="${items}" var="item">
                 <div class="form-group form-group--checkbox">
                     <label>
-                        <input type="checkbox" name="czekboksy" value="${item.id}" />
+                        <input type="checkbox" name="checkboxes" value="${item.id}" />
                         <span class="checkbox"></span>
                         <span class="description">${item.name}</span>
                     </label>

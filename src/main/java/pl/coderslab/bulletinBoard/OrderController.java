@@ -31,8 +31,8 @@ public class OrderController {
 	}
 
 	@GetMapping("/step1")
-	public String postStep(@RequestAttribute("czekboksy") int[] czekboksy) {
-		log.debug(czekboksy.toString());
+	public String postStep(HttpSession session, @RequestAttribute int[] checkboxes) {
+		log.debug(checkboxes.toString());
 		return "step_2";
 	}
 
