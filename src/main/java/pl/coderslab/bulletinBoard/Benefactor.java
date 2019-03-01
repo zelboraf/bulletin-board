@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "benefactors")
 @Data
 public class Benefactor extends Address {
 

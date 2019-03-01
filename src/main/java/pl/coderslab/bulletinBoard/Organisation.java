@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "organisations")
 @Data
 public class Organisation extends Address {
 
