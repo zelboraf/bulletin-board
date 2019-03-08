@@ -7,11 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "items")
 @Data
-public class Item {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private String name;
+public class Item extends BaseEntity {
 
 }

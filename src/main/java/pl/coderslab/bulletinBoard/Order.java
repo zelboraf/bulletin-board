@@ -1,26 +1,41 @@
 package pl.coderslab.bulletinBoard;
 
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 @Data
-public class Order {
+public class Order extends Address {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@ManyToOne
-	private Benefactor benefactor;
+	private LocalDate orderDate;
+	private LocalTime orderTime;
+	private LocalDate pickupDate;
+	private LocalTime pickupTime;
+	private String notice;
 	@ManyToOne
 	private Organisation organisation;
-	@OneToMany
+	private int numberOfBags;
+	@ManyToMany
 	private List<Item> items = new ArrayList<>();
-	private int packageCount;
+
+	public Order() {}
+
+	public Order(String name, String city, String street, String postCode, String phone,
+	             LocalDate pickupDate, LocalTime pickupTime, String notice,
+	             Organisation organisation, int numberOfBags, List<Item> items) {
+		super(name, city, street, postCode, phone);
+		this.pickupDate = pickupDate;
+		this.pickupTime = pickupTime;
+		this.notice = notice;
+		this.organisation = organisation;
+		this.numberOfBags = numberOfBags;
+		this.items = items;
+	}
 
 }

@@ -1,16 +1,40 @@
-<!-- STEP 2 -->
-<div data-step="2">
-    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-    <div class="form-group form-group--inline">
-        <label>
-            Liczba 60l worków:
-            <input type="number" name="bags" step="1" min="1" />
-        </label>
+<%@include file="../includes/header.jsp" %>
+
+<section class="form--steps">
+    <div class="form--steps-instructions">
+        <div class="form--steps-container">
+            <h3>Ważne!</h3>
+            <p data-step="2" class="active">
+                Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+                wiedzieć komu najlepiej je przekazać.
+            </p>
+        </div>
     </div>
 
-    <div class="form-group form-group--buttons">
-        <button type="button" class="btn prev-step">Wstecz</button>
-        <button type="button" class="btn next-step">Dalej</button>
+    <div class="form--steps-container">
+        <div class="form--steps-counter">Krok <span>2</span>/5</div>
+
+        <form action="/step2" method="post">
+            <div data-step="2" class="active">
+                <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+
+                <div class="form-group form-group--inline">
+                    <label>
+                        Liczba 60l worków:
+                        <input type="number" name="numberOfBags" value="1" step="1" min="1"/>
+                    </label>
+                </div>
+
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <input type="submit" class="btn next-step" value="Dalej"/>
+                </div>
+            </div>
+        </form>
     </div>
-</div>
+</section>
+
+<%@include file="../includes/footer.jsp" %>

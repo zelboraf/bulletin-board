@@ -7,11 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "organisation_types")
 @Data
-public class OrganisationType {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private String name;
+public class OrganisationType extends BaseEntity {
 
 }

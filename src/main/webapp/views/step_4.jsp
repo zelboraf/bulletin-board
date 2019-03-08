@@ -1,37 +1,33 @@
-<!-- STEP 4 -->
-<div data-step="4">
-    <h3>Wybierz organizacje, której chcesz pomóc:</h3>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-    <div class="form-group form-group--checkbox">
-        <label>
-            <input type="radio" name="organization" value="old" />
-            <span class="checkbox radio"></span>
-            <span class="description">
-                  <div class="title">Fundacja “Bez domu”</div>
-                  <div class="subtitle">
-                    Cel i misja: Pomoc dla osób nie posiadających miejsca
-                    zamieszkania
-                  </div>
-                </span>
-        </label>
-    </div>
+<%@include file="../includes/header.jsp" %>
 
-    <div class="form-group form-group--checkbox">
-        <label>
-            <input type="radio" name="organization" value="old" />
-            <span class="checkbox radio"></span>
-            <span class="description">
-                  <div class="title">Fundacja “Dla dzieci"</div>
-                  <div class="subtitle">
-                    Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji
-                    życiowej.
-                  </div>
-                </span>
-        </label>
-    </div>
+<div class="form--steps-container">
+    <div class="form--steps-counter">Krok <span>4</span>/5</div>
+    <form action="/step4" method="post">
+        <!-- STEP 4 -->
+        <div data-step="4" class="active">
+            <h3>Wybierz organizację, której chcesz pomóc:</h3>
 
-    <div class="form-group form-group--buttons">
-        <button type="button" class="btn prev-step">Wstecz</button>
-        <button type="button" class="btn next-step">Dalej</button>
-    </div>
-</div>
+            <c:forEach items="${organisations}" var="organisation">
+                <div class="form-group form-group--checkbox">
+                    <label>
+                        <input type="radio" name="selectedOrganisationId" value="${organisation.id}"/>
+                        <span class="checkbox radio"></span><span class="description"><div class="title">${organisation.name}”</div>
+                          <div class="subtitle">${organisation.description}
+                              ${organisation.city}, ${organisation.street}
+                          </div>
+                        </span>
+                    </label>
+                </div>
+            </c:forEach>
+
+            <div class="form-group form-group--buttons">
+                <button type="button" class="btn prev-step">Wstecz</button>
+                <input type="submit" class="btn next-step" value="Dalej"/>
+            </div>
+        </div>
+    </form>
+
+<%@include file="../includes/footer.jsp" %>

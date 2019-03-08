@@ -1,66 +1,63 @@
-<!-- STEP 3 -->
-<div data-step="3">
-    <h3>Lokalizacja:</h3>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-    <div class="form-group form-group--dropdown">
-        <select name="localization">
-            <option value="0">- wybierz -</option>
-            <option value="warsaw">Warszawa</option>
-            <option value="wroclaw">Wrocław</option>
-            <option value="poznan">Poznań</option>
-            <option value="gdansk">Gdańsk</option>
-        </select>
-    </div>
+<%@include file="../includes/header.jsp" %>
 
-    <div class="form-section">
-        <h4>Komu chcesz pomóc?</h4>
-        <div class="form-section--checkboxes">
-            <div class="form-group form-group--checkbox">
-                <label>
-                    <input type="checkbox" name="help[]" value="children" />
-                    <span class="checkbox">dzieciom</span>
-                </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-                <label>
-                    <input type="checkbox" name="help[]" value="mothers" />
-                    <span class="checkbox">samotnym matkom</span>
-                </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-                <label>
-                    <input type="checkbox" name="help[]" value="homeless" />
-                    <span class="checkbox">bezdomnym</span>
-                </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-                <label>
-                    <input type="checkbox" name="help[]" value="disabled" />
-                    <span class="checkbox">niepełnosprawnym</span>
-                </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-                <label>
-                    <input type="checkbox" name="help[]" value="old" />
-                    <span class="checkbox">osobom starszym</span>
-                </label>
-            </div>
+<section class="form--steps">
+    <div class="form--steps-instructions">
+        <div class="form--steps-container">
+            <h3>Ważne!</h3>
+            <p data-step="3">
+                Jeśli wiesz komu chcesz pomóc, możesz wpisać nazwę tej organizacji w
+                wyszukiwarce. Możesz też filtrować organizacje po ich lokalizacji
+                bądź celu ich pomocy.
+            </p>
         </div>
     </div>
 
-    <div class="form-section">
-        <h4>Wpisz nazwę konkretnej organizacji (opcjonalnie)</h4>
-        <div class="form-group">
-            <textarea rows="4" name="organization_search"></textarea>
-        </div>
-    </div>
+    <div class="form--steps-container">
+        <div class="form--steps-counter">Krok <span>3</span>/5</div>
+        <form action="/step3" method="post">
 
-    <div class="form-group form-group--buttons">
-        <button type="button" class="btn prev-step">Wstecz</button>
-        <button type="button" class="btn next-step">Szukaj</button>
+            <div data-step="3" class="active">
+                <h3>Lokalizacja:</h3>
+
+                <div class="form-group form-group--dropdown">
+                    <select name="selectedCity">
+                        <c:forEach items="${cities}" var="city">
+                            <option value="${city}">${city}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <h4>Komu chcesz pomóc?</h4>
+                    <div class="form-section--checkboxes">
+                        <c:forEach items="${organisationTypes}" var="organisationType">
+                            <div class="form-group form-group--checkbox">
+                                <label>
+                                    <input type="checkbox" name="selectedOrganisationTypes" value="${organisationType.id}"/>
+                                    <span class="checkbox">${organisationType.name}</span>
+                                </label>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Wpisz nazwę konkretnej organizacji (opcjonalnie)</h4>
+                    <div class="form-group">
+                        <textarea rows="4" name="organisationName"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <input type="submit" class="btn next-step" value="Dalej"/>
+                </div>
+            </div>
+        </form>
     </div>
-</div>
+</section>
+
+<%@include file="../includes/footer.jsp" %>
