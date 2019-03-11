@@ -23,7 +23,8 @@
                 <h3>Lokalizacja:</h3>
 
                 <div class="form-group form-group--dropdown">
-                    <select name="selectedCity">
+                    <select name="city">
+                        <option value=""/>
                         <c:forEach items="${cities}" var="city">
                             <option value="${city}">${city}</option>
                         </c:forEach>
@@ -36,7 +37,7 @@
                         <c:forEach items="${organisationTypes}" var="organisationType">
                             <div class="form-group form-group--checkbox">
                                 <label>
-                                    <input type="checkbox" name="selectedOrganisationTypes" value="${organisationType.id}"/>
+                                    <input type="checkbox" name="types" value="${organisationType.id}"/>
                                     <span class="checkbox">${organisationType.name}</span>
                                 </label>
                             </div>
@@ -47,7 +48,7 @@
                 <div class="form-section">
                     <h4>Wpisz nazwę konkretnej organizacji (opcjonalnie)</h4>
                     <div class="form-group">
-                        <textarea rows="4" name="organisationName"></textarea>
+                        <textarea rows="4" name="name"></textarea>
                     </div>
                 </div>
 

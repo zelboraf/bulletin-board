@@ -3,6 +3,7 @@
 
 <%@include file="../includes/header.jsp" %>
 
+
 <div class="form--steps-container">
     <div class="form--steps-counter">Krok <span>4</span>/5</div>
     <form action="/step2" method="post">

@@ -3,31 +3,49 @@
 
 <%@include file="../includes/header.jsp" %>
 
-<div class="form--steps-container">
-    <div class="form--steps-counter">Krok <span>4</span>/5</div>
-    <form action="/step4" method="post">
-        <!-- STEP 4 -->
-        <div data-step="4" class="active">
-            <h3>Wybierz organizację, której chcesz pomóc:</h3>
+<section class="form--steps">
+    <div class="form--steps-instructions">
+        <div class="form--steps-container">
+            <h3>Ważne!</h3>
+            <p data-step="3">
+                Jeśli wiesz komu chcesz pomóc, możesz wpisać nazwę tej organizacji w
+                wyszukiwarce. Możesz też filtrować organizacje po ich lokalizacji
+                bądź celu ich pomocy.
+            </p>
+        </div>
+    </div>
 
-            <c:forEach items="${organisations}" var="organisation">
-                <div class="form-group form-group--checkbox">
-                    <label>
-                        <input type="radio" name="selectedOrganisationId" value="${organisation.id}"/>
-                        <span class="checkbox radio"></span><span class="description"><div class="title">${organisation.name}”</div>
+    <div class="form--steps-container">
+        <div class="form--steps-counter">Krok <span>4</span>/5</div>
+        <form action="/step4" method="post">
+            <!-- STEP 4 -->
+            <div data-step="4" class="active">
+                <h3>Wybierz organizację, której chcesz pomóc:</h3>
+
+                <c:forEach items="${organisations}" var="organisation">
+                    <div class="form-group form-group--checkbox">
+                        <label>
+                            <input type="radio" name="selectedOrganisationId" value="${organisation.id}"/>
+                            <span class="checkbox radio"></span><span class="description"><div
+                                class="title">${organisation.name}”</div>
                           <div class="subtitle">${organisation.description}
                               ${organisation.city}, ${organisation.street}
                           </div>
                         </span>
-                    </label>
-                </div>
-            </c:forEach>
+                        </label>
+                    </div>
+                </c:forEach>
 
-            <div class="form-group form-group--buttons">
-                <button type="button" class="btn prev-step">Wstecz</button>
-                <input type="submit" class="btn next-step" value="Dalej"/>
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <c:if test="${not empty organisation.description}">
+                        <input type="submit" class="btn next-step" value="Dalej"/>
+                    </c:if>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+</section>
+
 
 <%@include file="../includes/footer.jsp" %>

@@ -2,25 +2,19 @@ package pl.coderslab.bulletinBoard;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-
 @Log
 public class OrderController {
 
@@ -28,6 +22,7 @@ public class OrderController {
 	private final OrganisationInterface organisationInterface;
 	private final OrganisationTypeInterface organisationTypeInterface;
 	private final OrderInterface orderInterface;
+	private final OrderService orderService;
 
 	@GetMapping("/")
 	public String getStep(HttpSession session) {
@@ -38,12 +33,8 @@ public class OrderController {
 
 	@PostMapping("/step1")
 	public String postStep1(HttpSession session, @RequestParam int[] itemArray) {
-//		List<Item> items = (List<Item>) session.getAttribute("items");
-		List<Item> selectedItems = itemInterface.findById(itemArray);
-//		for (int i = 0; i < itemArray.length; i++) {
-//			selectedItems.add(items.get(itemArray[i] - 1));
-//		}
-		session.setAttribute("items", selectedItems);
+		List<Item> selectedItems = itemInterface.findAllByIds(itemArray);
+		session.setAttribute("selectedItems", selectedItems);
 		return "step_2";
 	}
 
@@ -57,27 +48,18 @@ public class OrderController {
 
 	@PostMapping("/step3")
 	public String postStep3(HttpSession session, Model model,
-	                        @RequestParam(required = false) String selectedCity,
-	                        @RequestParam(required = false) long[] selectedOrganisationTypes,
-	                        @RequestParam String organisationName) {
-
-		List<Organisation> organisations = new ArrayList<>();
-		if (selectedCity != null && selectedOrganisationTypes != null) {
-			organisations.addAll(organisationInterface.findAllByCityAndType(selectedCity, selectedOrganisationTypes));
-		} else if (selectedCity == null) {
-			organisations.addAll(organisationInterface.findAllByType(selectedOrganisationTypes));
-		} else {
-			organisations.addAll(organisationInterface.findAllByCity(selectedCity));
-		}
-		if (!organisationName.equals("")) {           // empty textarea returns "" instead of null
-			organisations.addAll(organisationInterface.findAllByName(organisationName));
-		}
+	                        @RequestParam(required = false) String city,
+	                        @RequestParam(required = false) long[] types,
+	                        @RequestParam String name) {
+		List<Organisation> organisations = orderService.findOrganisations(city, types, name);
 		if (organisations.isEmpty()) {
-			return "step_4_no_results";
+			organisations.add(new Organisation("Brak wyników wyszukiwania"));
 		}
 		model.addAttribute("organisations", organisations);
 		return "step_4";
 	}
+
+
 
 	@PostMapping("/step4")
 	public String postStep4(HttpSession session, Model model, @RequestParam long selectedOrganisationId) {
@@ -95,13 +77,13 @@ public class OrderController {
 	                        @RequestParam String pickupDate,
 	                        @RequestParam String pickupTime,
 	                        @RequestParam String notice) {
-		List<Item> items = (List<Item>) session.getAttribute("items");
+		List<Item> selectedItems = (List<Item>) session.getAttribute("selectedItems");
 		int numberOfBags = (int) session.getAttribute("numberOfBags");
 		long organisationId = ((long) session.getAttribute("organisationId"));
 		Organisation organisation = organisationInterface.getOne(organisationId);
 		Order order = new Order(name, street, city, postCode, phone,
 				LocalDate.parse(pickupDate), LocalTime.parse(pickupTime), notice,
-				organisation, numberOfBags, items);
+				organisation, numberOfBags, selectedItems);
 		session.setAttribute("order", order);
 		return "step_6";
 	}
