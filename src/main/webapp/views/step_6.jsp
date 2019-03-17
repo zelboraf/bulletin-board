@@ -31,7 +31,7 @@
                                 <span class="summary--text">
                                 Liczba worków: ${sessionScope.order.numberOfBags}<br/>
                                 Wybrane przedmioty:
-                                    <c:forEach items="${items}" var="item">${item.name}&nbsp;</c:forEach>
+                                    <c:forEach items="${selectedItems}" var="item">${item.name}&nbsp;</c:forEach>
                                 <br/>
 
                             </span>
@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <input type="submit" class="btn" value="Potwierdzam"/>
+                    <input type="submit" class="btn prev-step" name="prev" value="Wstecz"/>
+                    <input type="submit" class="btn" name="next" value="Potwierdzam"/>
                 </div>
             </div>
         </form>

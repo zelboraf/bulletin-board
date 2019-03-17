@@ -22,12 +22,12 @@
             <div data-step="4" class="active">
                 <h3>Wybierz organizację, której chcesz pomóc:</h3>
 
-                <c:forEach items="${organisations}" var="organisation">
+                <c:forEach items="${sessionScope.organisations}" var="organisation">
                     <div class="form-group form-group--checkbox">
                         <label>
                             <input type="radio" name="selectedOrganisationId" value="${organisation.id}"/>
                             <span class="checkbox radio"></span><span class="description"><div
-                                class="title">${organisation.name}”</div>
+                                class="title">${organisation.name}</div>
                           <div class="subtitle">${organisation.description}
                               ${organisation.city}, ${organisation.street}
                           </div>
@@ -36,10 +36,14 @@
                     </div>
                 </c:forEach>
 
+                <p class="error-message">
+                    ${sessionScope.errorMessage}
+                </p>
+
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <c:if test="${not empty organisation.description}">
-                        <input type="submit" class="btn next-step" value="Dalej"/>
+                    <input type="submit" class="btn prev-step" name="prev" value="Wstecz"/>
+                    <c:if test="${not empty sessionScope.organisations}">
+                        <input type="submit" class="btn next-step" name="next" value="Dalej"/>
                     </c:if>
                 </div>
             </div>

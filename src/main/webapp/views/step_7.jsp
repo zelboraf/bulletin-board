@@ -24,7 +24,6 @@
                 informacje o odbiorze.
             </h2>
         </div>
-        </form>
     </div>
 </section>
 

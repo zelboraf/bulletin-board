@@ -25,50 +25,99 @@ public class OrderController {
 	private final OrderService orderService;
 
 	@GetMapping("/")
-	public String getStep(HttpSession session) {
-		List<Item> items = itemInterface.findAll();
-		session.setAttribute("items", items);
+	public String getRoot() {
+		return "redirect:/step1";
+	}
+
+	@GetMapping("/step1")
+	public String getStep1(Model model) {
+		model.addAttribute("items", itemInterface.findAll());
 		return "step_1";
 	}
-
 	@PostMapping("/step1")
-	public String postStep1(HttpSession session, @RequestParam int[] itemArray) {
-		List<Item> selectedItems = itemInterface.findAllByIds(itemArray);
-		session.setAttribute("selectedItems", selectedItems);
-		return "step_2";
+	public String postStep1(HttpSession session, @RequestParam(required = false) int[] selectedItemIds) {
+		if (selectedItemIds == null) {
+			session.setAttribute("errorMessage", "Wybierz co najmniej jedną kategorię");
+			return "redirect:/step1";
+		}
+		session.setAttribute("selectedItemIds", selectedItemIds);
+		session.removeAttribute("errorMessage");
+		return "redirect:/step2";
 	}
 
+	@GetMapping("/step2")
+	public String getStep2(HttpSession session) {
+		Integer numberOfBags = (Integer) session.getAttribute("numberOfBags");
+		if (numberOfBags == null) {
+			session.setAttribute("numberOfBags", 1);
+		}
+		return "step_2";
+	}
 	@PostMapping("/step2")
-	public String postStep2(HttpSession session, Model model, @RequestParam int numberOfBags) {
+	public String postStep2(HttpSession session,
+	                        @RequestParam(required = false) int numberOfBags,
+                            @RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step1";
+		}
 		session.setAttribute("numberOfBags", numberOfBags);
+		return "redirect:/step3";
+	}
+
+	@GetMapping("/step3")
+	public String getStep3(Model model) {
 		model.addAttribute("cities", organisationInterface.findCities());
 		model.addAttribute("organisationTypes", organisationTypeInterface.findAll());
 		return "step_3";
 	}
-
 	@PostMapping("/step3")
-	public String postStep3(HttpSession session, Model model,
+	public String postStep3(HttpSession session,
 	                        @RequestParam(required = false) String city,
 	                        @RequestParam(required = false) long[] types,
-	                        @RequestParam String name) {
+	                        @RequestParam String name,
+	                        @RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step2";
+		}
 		List<Organisation> organisations = orderService.findOrganisations(city, types, name);
 		if (organisations.isEmpty()) {
-			organisations.add(new Organisation("Brak wyników wyszukiwania"));
+			session.setAttribute("errorMessage", "Brak wyników wyszukiwania");
+			return "redirect:/step3";
 		}
-		model.addAttribute("organisations", organisations);
+		if (city != null) {
+			session.setAttribute("city", city);
+		}
+		session.setAttribute("organisations", organisations);
+		session.removeAttribute("errorMessage");
+		return "redirect:/step4";
+	}
+
+	@GetMapping("/step4")
+	public String getStep4() {
 		return "step_4";
 	}
-
-
-
 	@PostMapping("/step4")
-	public String postStep4(HttpSession session, Model model, @RequestParam long selectedOrganisationId) {
+	public String postStep4(HttpSession session,
+	                        @RequestParam(required = false) Long selectedOrganisationId,
+	                        @RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step3";
+		}
+		if (selectedOrganisationId == null) {
+			session.setAttribute("errorMessage", "Musisz wybrać jedną organizację");
+			return "redirect:/step4";
+		}
 		session.setAttribute("organisationId", selectedOrganisationId);
-		return "step_5";
+		session.removeAttribute("errorMessage");
+		return "redirect:/step5";
 	}
 
+	@GetMapping("/step5")
+	public String getStep5() {
+		return "step_5";
+	}
 	@PostMapping("/step5")
-	public String postStep5(HttpSession session, Model model,
+	public String postStep5(HttpSession session,
 	                        @RequestParam String name,
 	                        @RequestParam String street,
 	                        @RequestParam String city,
@@ -76,8 +125,21 @@ public class OrderController {
 	                        @RequestParam String phone,
 	                        @RequestParam String pickupDate,
 	                        @RequestParam String pickupTime,
-	                        @RequestParam String notice) {
-		List<Item> selectedItems = (List<Item>) session.getAttribute("selectedItems");
+	                        @RequestParam String notice,
+	                        @RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step4";
+		}
+		if (name.equals("")) {
+			session.setAttribute("errorMessage", "Wprowadź nazwę");
+			return "step_5";
+		}
+		if (street.equals("") || city.equals("")) {
+			session.setAttribute("errorMessage", "Wprowadź adres");
+			return "step_5";
+		}
+		int[] selectedItemIds = (int[]) session.getAttribute("selectedItemIds");
+		List<Item> selectedItems = itemInterface.findAllByIds(selectedItemIds);
 		int numberOfBags = (int) session.getAttribute("numberOfBags");
 		long organisationId = ((long) session.getAttribute("organisationId"));
 		Organisation organisation = organisationInterface.getOne(organisationId);
@@ -85,11 +147,19 @@ public class OrderController {
 				LocalDate.parse(pickupDate), LocalTime.parse(pickupTime), notice,
 				organisation, numberOfBags, selectedItems);
 		session.setAttribute("order", order);
-		return "step_6";
+		session.removeAttribute("errorMessage");
+		return "redirect:/step6";
 	}
 
+	@GetMapping("/step6")
+	public String getStep6(@RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step5";
+		}
+		return "step_6";
+	}
 	@PostMapping("/step6")
-	public String postStep5(HttpSession session, Model model) {
+	public String postStep6(HttpSession session) {
 		Order order = (Order) session.getAttribute("order");
 		order.setOrderDate(LocalDate.now());
 		order.setOrderTime(LocalTime.now());

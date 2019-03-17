@@ -26,13 +26,13 @@
                 <div class="form-group form-group--inline">
                     <label>
                         Liczba 60l worków:
-                        <input type="number" name="numberOfBags" value="1" step="1" min="1"/>
+                        <input type="number" name="numberOfBags" value="${sessionScope.numberOfBags}" step="1" min="1"/>
                     </label>
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <input type="submit" class="btn next-step" value="Dalej"/>
+                    <input type="submit" class="btn prev-step" name="prev" value="Wstecz"/>
+                    <input type="submit" class="btn next-step" name="next" value="Dalej"/>
                 </div>
             </div>
         </form>
