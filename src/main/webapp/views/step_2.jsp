@@ -30,6 +30,10 @@
                     </label>
                 </div>
 
+                <p class="error-message">
+                    ${sessionScope.errorMessage}
+                </p>
+
                 <div class="form-group form-group--buttons">
                     <input type="submit" class="btn prev-step" name="prev" value="Wstecz"/>
                     <input type="submit" class="btn next-step" name="next" value="Dalej"/>

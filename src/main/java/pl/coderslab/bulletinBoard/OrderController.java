@@ -60,6 +60,9 @@ public class OrderController {
 		if (prev != null) {
 			return "redirect:/step1";
 		}
+		if (numberOfBags <= 0) {
+			session.setAttribute("errorMessage", "Wprowadź liczbę worków - co najmniej 1");
+		}
 		session.setAttribute("numberOfBags", numberOfBags);
 		return "redirect:/step3";
 	}
@@ -98,16 +101,16 @@ public class OrderController {
 	}
 	@PostMapping("/step4")
 	public String postStep4(HttpSession session,
-	                        @RequestParam(required = false) Long selectedOrganisationId,
+	                        @RequestParam(required = false) Long organisationId,
 	                        @RequestParam(required = false) String prev) {
 		if (prev != null) {
 			return "redirect:/step3";
 		}
-		if (selectedOrganisationId == null) {
+		if (organisationId == null) {
 			session.setAttribute("errorMessage", "Musisz wybrać jedną organizację");
 			return "redirect:/step4";
 		}
-		session.setAttribute("organisationId", selectedOrganisationId);
+		session.setAttribute("organisationId", organisationId);
 		session.removeAttribute("errorMessage");
 		return "redirect:/step5";
 	}
@@ -141,7 +144,7 @@ public class OrderController {
 		int[] selectedItemIds = (int[]) session.getAttribute("selectedItemIds");
 		List<Item> selectedItems = itemInterface.findAllByIds(selectedItemIds);
 		int numberOfBags = (int) session.getAttribute("numberOfBags");
-		long organisationId = ((long) session.getAttribute("organisationId"));
+		Long organisationId = ((Long) session.getAttribute("organisationId"));
 		Organisation organisation = organisationInterface.getOne(organisationId);
 		Order order = new Order(name, street, city, postCode, phone,
 				LocalDate.parse(pickupDate), LocalTime.parse(pickupTime), notice,
