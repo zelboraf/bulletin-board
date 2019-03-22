@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%@include file="../includes/header.jsp" %>
@@ -23,27 +24,32 @@
                 <h3>Lokalizacja:</h3>
 
                 <div class="form-group form-group--dropdown">
-                    <select name="city">
+                    <select name="selectedCity">
                         <option value=""/>
                         <c:forEach items="${cities}" var="city">
                             <option value="${city}">${city}</option>
                         </c:forEach>
                     </select>
                 </div>
-
+                ${sessionScope.selectedCity}
                 <div class="form-section">
                     <h4>Komu chcesz pomóc?</h4>
                     <div class="form-section--checkboxes">
-                        <c:forEach items="${organisationTypes}" var="organisationType">
+                        <c:forEach items="${types}" var="type">
                             <div class="form-group form-group--checkbox">
                                 <label>
-                                    <input type="checkbox" name="types" value="${organisationType.id}"/>
-                                    <span class="checkbox">${organisationType.name}</span>
+                                    <input type="checkbox" name="selectedTypeIds" value="${type.id}"
+                                        <c:forEach items="${sessionScope.selectedTypeIds}" var="id">
+                                            <c:if test="${fn:contains(id, type.id)}">checked</c:if>
+                                        </c:forEach>
+                                    />
+                                    <span class="checkbox">${type.name}</span>
                                 </label>
                             </div>
                         </c:forEach>
                     </div>
                 </div>
+                ${sessionScope.selectedTypeIds}
 
                 <div class="form-section">
                     <h4>Wpisz nazwę konkretnej organizacji (opcjonalnie)</h4>

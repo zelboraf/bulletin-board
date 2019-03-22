@@ -35,7 +35,8 @@ public class OrderController {
 		return "step_1";
 	}
 	@PostMapping("/step1")
-	public String postStep1(HttpSession session, @RequestParam(required = false) int[] selectedItemIds) {
+	public String postStep1(HttpSession session,
+	                        @RequestParam(required = false) int[] selectedItemIds) {
 		if (selectedItemIds == null) {
 			session.setAttribute("errorMessage", "Wybierz co najmniej jedną kategorię");
 			return "redirect:/step1";
@@ -70,25 +71,31 @@ public class OrderController {
 	@GetMapping("/step3")
 	public String getStep3(Model model) {
 		model.addAttribute("cities", organisationInterface.findCities());
-		model.addAttribute("organisationTypes", organisationTypeInterface.findAll());
+		model.addAttribute("types", organisationTypeInterface.findAll());
 		return "step_3";
 	}
 	@PostMapping("/step3")
 	public String postStep3(HttpSession session,
-	                        @RequestParam(required = false) String city,
-	                        @RequestParam(required = false) long[] types,
-	                        @RequestParam String name,
+	                        @RequestParam String selectedCity,
+	                        @RequestParam(required = false) int[] selectedTypeIds,
+	                        @RequestParam(required = false) String selectedName,
 	                        @RequestParam(required = false) String prev) {
 		if (prev != null) {
 			return "redirect:/step2";
 		}
-		List<Organisation> organisations = orderService.findOrganisations(city, types, name);
+		List<Organisation> organisations = orderService.findOrganisations(selectedCity, selectedTypeIds, selectedName);
+		if (!selectedCity.equals("")) {
+			session.setAttribute("selectedCity", selectedCity);
+		}
+		for (int i : selectedTypeIds) {
+			log.info("type: " + i);
+		}
+		if (selectedTypeIds != null) {
+			session.setAttribute("selectedTypeIds", selectedTypeIds);
+		}
 		if (organisations.isEmpty()) {
 			session.setAttribute("errorMessage", "Brak wyników wyszukiwania");
 			return "redirect:/step3";
-		}
-		if (city != null) {
-			session.setAttribute("city", city);
 		}
 		session.setAttribute("organisations", organisations);
 		session.removeAttribute("errorMessage");

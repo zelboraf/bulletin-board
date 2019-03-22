@@ -18,17 +18,17 @@ public class OrderService {
 
 	private final OrganisationInterface organisationInterface;
 
-	public List<Organisation> findOrganisations(String city, long[] types, String name) {
+	public List<Organisation> findOrganisations(String city, int[] types, String name) {
 		List<Organisation> organisations = new ArrayList<>();
-		if (city != null && types != null) {
-			organisations.addAll(organisationInterface.findAllByCityAndType(city, types));
-		} else if (city != null) {
-			organisations.addAll(organisationInterface.findAllByCity(city));
-		} else {
-			organisations.addAll(organisationInterface.findAllByType(types));
-		}
-		if (!name.equals("")) {           // empty textarea returns "" instead of null
+		if (name != null) {
 			organisations.addAll(organisationInterface.findAllByName(name));
+		}
+		if (!city.equals("") && types != null) {
+			organisations.addAll(organisationInterface.findAllByCityAndType(city, types));
+		} else if (!city.equals("")) {
+			organisations.addAll(organisationInterface.findAllByCity(city));
+		} else if (types != null) {
+			organisations.addAll(organisationInterface.findAllByType(types));
 		}
 		return organisations;
 	}
