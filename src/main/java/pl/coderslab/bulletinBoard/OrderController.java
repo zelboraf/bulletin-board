@@ -87,9 +87,6 @@ public class OrderController {
 		if (!selectedCity.equals("")) {
 			session.setAttribute("selectedCity", selectedCity);
 		}
-		for (int i : selectedTypeIds) {
-			log.info("type: " + i);
-		}
 		if (selectedTypeIds != null) {
 			session.setAttribute("selectedTypeIds", selectedTypeIds);
 		}

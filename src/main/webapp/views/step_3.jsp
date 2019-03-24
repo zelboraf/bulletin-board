@@ -27,11 +27,13 @@
                     <select name="selectedCity">
                         <option value=""/>
                         <c:forEach items="${cities}" var="city">
-                            <option value="${city}">${city}</option>
+                            <option value="${city}"
+                                    <c:if test="${sessionScope.selectedCity == city}">selected="selected"</c:if>
+                            >${city}</option>
                         </c:forEach>
                     </select>
                 </div>
-                ${sessionScope.selectedCity}
+
                 <div class="form-section">
                     <h4>Komu chcesz pomóc?</h4>
                     <div class="form-section--checkboxes">
@@ -49,7 +51,6 @@
                         </c:forEach>
                     </div>
                 </div>
-                ${sessionScope.selectedTypeIds}
 
                 <div class="form-section">
                     <h4>Wpisz nazwę konkretnej organizacji (opcjonalnie)</h4>
