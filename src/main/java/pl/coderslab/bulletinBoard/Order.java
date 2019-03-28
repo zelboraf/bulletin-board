@@ -1,6 +1,7 @@
 package pl.coderslab.bulletinBoard;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
 public class Order extends Address {
 
 	private LocalDate orderDate;
@@ -37,5 +39,6 @@ public class Order extends Address {
 		this.numberOfBags = numberOfBags;
 		this.items = items;
 	}
+
 
 }

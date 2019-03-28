@@ -1,11 +1,13 @@
 package pl.coderslab.bulletinBoard;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public abstract class Address extends BaseEntity {
 
 	protected String city;

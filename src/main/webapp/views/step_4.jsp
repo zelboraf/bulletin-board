@@ -25,7 +25,11 @@
                 <c:forEach items="${sessionScope.organisations}" var="organisation">
                     <div class="form-group form-group--checkbox">
                         <label>
-                            <input type="radio" name="organisationId" value="${organisation.id}"/>
+                            <input type="radio" name="organisationId" value="${organisation.id}"
+                                <c:if test="${sessionScope.selectedOrganisationId == organisation.id}">
+                                        checked
+                                </c:if>
+                            />
                             <span class="checkbox radio"></span><span class="description"><div
                                 class="title">${organisation.name}</div>
                           <div class="subtitle">${organisation.description}

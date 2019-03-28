@@ -1,7 +1,6 @@
 package pl.coderslab.bulletinBoard;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@Log
 public class OrderController {
 
 	private final ItemInterface itemInterface;
@@ -111,10 +109,10 @@ public class OrderController {
 			return "redirect:/step3";
 		}
 		if (organisationId == null) {
-			session.setAttribute("errorMessage", "Musisz wybrać jedną organizację");
+			session.setAttribute("errorMessage", "Wybierz jedną organizację");
 			return "redirect:/step4";
 		}
-		session.setAttribute("organisationId", organisationId);
+		session.setAttribute("selectedOrganisationId", organisationId);
 		session.removeAttribute("errorMessage");
 		return "redirect:/step5";
 	}
@@ -145,10 +143,14 @@ public class OrderController {
 			session.setAttribute("errorMessage", "Wprowadź adres");
 			return "step_5";
 		}
+//		if () {
+//			session.setAttribute("errorMessage", "Niepoprawny numer telefonu");
+//			return "step_5";
+//		}
 		int[] selectedItemIds = (int[]) session.getAttribute("selectedItemIds");
 		List<Item> selectedItems = itemInterface.findAllByIds(selectedItemIds);
 		int numberOfBags = (int) session.getAttribute("numberOfBags");
-		Long organisationId = ((Long) session.getAttribute("organisationId"));
+		Long organisationId = ((Long) session.getAttribute("selectedOrganisationId"));
 		Organisation organisation = organisationInterface.getOne(organisationId);
 		Order order = new Order(name, street, city, postCode, phone,
 				LocalDate.parse(pickupDate), LocalTime.parse(pickupTime), notice,
@@ -159,14 +161,15 @@ public class OrderController {
 	}
 
 	@GetMapping("/step6")
-	public String getStep6(@RequestParam(required = false) String prev) {
-		if (prev != null) {
-			return "redirect:/step5";
-		}
+	public String getStep6() {
 		return "step_6";
 	}
 	@PostMapping("/step6")
-	public String postStep6(HttpSession session) {
+	public String postStep6(HttpSession session,
+	                        @RequestParam(required = false) String prev) {
+		if (prev != null) {
+			return "redirect:/step5";
+		}
 		Order order = (Order) session.getAttribute("order");
 		order.setOrderDate(LocalDate.now());
 		order.setOrderTime(LocalTime.now());
