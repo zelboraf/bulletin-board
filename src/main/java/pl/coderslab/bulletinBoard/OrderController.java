@@ -1,19 +1,24 @@
 package pl.coderslab.bulletinBoard;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@Log
 public class OrderController {
 
 	private final ItemInterface itemInterface;
@@ -61,6 +66,7 @@ public class OrderController {
 		}
 		if (numberOfBags <= 0) {
 			session.setAttribute("errorMessage", "Wprowadź liczbę worków - co najmniej 1");
+			return "redirect:/step2";
 		}
 		session.setAttribute("numberOfBags", numberOfBags);
 		return "redirect:/step3";
@@ -118,43 +124,23 @@ public class OrderController {
 	}
 
 	@GetMapping("/step5")
-	public String getStep5() {
+	public String getStep5(Model model) {
+		model.addAttribute("order", new Order());
 		return "step_5";
 	}
 	@PostMapping("/step5")
 	public String postStep5(HttpSession session,
-	                        @RequestParam String name,
-	                        @RequestParam String street,
-	                        @RequestParam String city,
-	                        @RequestParam String postCode,
-	                        @RequestParam String phone,
-	                        @RequestParam String pickupDate,
-	                        @RequestParam String pickupTime,
-	                        @RequestParam String notice,
+	                        @Valid @ModelAttribute Order order, BindingResult result,
 	                        @RequestParam(required = false) String prev) {
 		if (prev != null) {
 			return "redirect:/step4";
 		}
-		if (name.equals("")) {
-			session.setAttribute("errorMessage", "Wprowadź nazwę");
+		if (result.hasErrors()) {
 			return "step_5";
 		}
-		if (street.equals("") || city.equals("")) {
-			session.setAttribute("errorMessage", "Wprowadź adres");
-			return "step_5";
-		}
-//		if () {
-//			session.setAttribute("errorMessage", "Niepoprawny numer telefonu");
-//			return "step_5";
-//		}
-		int[] selectedItemIds = (int[]) session.getAttribute("selectedItemIds");
-		List<Item> selectedItems = itemInterface.findAllByIds(selectedItemIds);
-		int numberOfBags = (int) session.getAttribute("numberOfBags");
-		Long organisationId = ((Long) session.getAttribute("selectedOrganisationId"));
-		Organisation organisation = organisationInterface.getOne(organisationId);
-		Order order = new Order(name, street, city, postCode, phone,
-				LocalDate.parse(pickupDate), LocalTime.parse(pickupTime), notice,
-				organisation, numberOfBags, selectedItems);
+		order.setItems(itemInterface.findAllByIds((int[]) session.getAttribute("selectedItemIds")));
+		order.setNumberOfBags((int) session.getAttribute("numberOfBags"));
+		order.setOrganisation(organisationInterface.getOne((Long) session.getAttribute("selectedOrganisationId")));
 		session.setAttribute("order", order);
 		session.removeAttribute("errorMessage");
 		return "redirect:/step6";

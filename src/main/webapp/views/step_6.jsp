@@ -31,9 +31,8 @@
                                 <span class="summary--text">
                                 Liczba worków: ${sessionScope.order.numberOfBags}<br/>
                                 Wybrane przedmioty:
-                                    <c:forEach items="${selectedItems}" var="item">${item.name}&nbsp;</c:forEach>
+                                    <c:forEach items="${sessionScope.order.items}" var="item">${item.name}&nbsp;</c:forEach>
                                 <br/>
-
                             </span>
                             </li>
 

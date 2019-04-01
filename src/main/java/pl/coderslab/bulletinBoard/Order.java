@@ -2,8 +2,10 @@ package pl.coderslab.bulletinBoard;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,9 +17,14 @@ import java.util.List;
 @Setter
 public class Order extends Address {
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate orderDate;
+	@DateTimeFormat(pattern = "HH:mm:ss")
 	private LocalTime orderTime;
+	@Future
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate pickupDate;
+	@DateTimeFormat(pattern = "HH:mm:ss")
 	private LocalTime pickupTime;
 	private String notice;
 	@ManyToOne
@@ -27,18 +34,5 @@ public class Order extends Address {
 	private List<Item> items = new ArrayList<>();
 
 	public Order() {}
-
-	public Order(String name, String city, String street, String postCode, String phone,
-	             LocalDate pickupDate, LocalTime pickupTime, String notice,
-	             Organisation organisation, int numberOfBags, List<Item> items) {
-		super(name, city, street, postCode, phone);
-		this.pickupDate = pickupDate;
-		this.pickupTime = pickupTime;
-		this.notice = notice;
-		this.organisation = organisation;
-		this.numberOfBags = numberOfBags;
-		this.items = items;
-	}
-
 
 }

@@ -1,7 +1,6 @@
 package pl.coderslab.bulletinBoard;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Data
 @AllArgsConstructor
 public class OrderService {
 
