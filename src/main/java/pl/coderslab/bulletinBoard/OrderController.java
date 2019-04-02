@@ -1,7 +1,6 @@
 package pl.coderslab.bulletinBoard;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@Log
 public class OrderController {
 
 	private final ItemInterface itemInterface;
@@ -51,20 +49,19 @@ public class OrderController {
 
 	@GetMapping("/step2")
 	public String getStep2(HttpSession session) {
-		Integer numberOfBags = (Integer) session.getAttribute("numberOfBags");
-		if (numberOfBags == null) {
+		if (session.getAttribute("numberOfBags") == null) {
 			session.setAttribute("numberOfBags", 1);
 		}
 		return "step_2";
 	}
 	@PostMapping("/step2")
 	public String postStep2(HttpSession session,
-	                        @RequestParam(required = false) int numberOfBags,
+	                        @RequestParam(required = false) Integer numberOfBags,
                             @RequestParam(required = false) String prev) {
 		if (prev != null) {
 			return "redirect:/step1";
 		}
-		if (numberOfBags <= 0) {
+		if (numberOfBags == null || numberOfBags <= 0) {
 			session.setAttribute("errorMessage", "Wprowadź liczbę worków - co najmniej 1");
 			return "redirect:/step2";
 		}
@@ -142,7 +139,6 @@ public class OrderController {
 		order.setNumberOfBags((int) session.getAttribute("numberOfBags"));
 		order.setOrganisation(organisationInterface.getOne((Long) session.getAttribute("selectedOrganisationId")));
 		session.setAttribute("order", order);
-		session.removeAttribute("errorMessage");
 		return "redirect:/step6";
 	}
 

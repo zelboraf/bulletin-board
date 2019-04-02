@@ -16,9 +16,10 @@ public abstract class Address extends BaseEntity {
 	protected String city;
 	@Size(min = 2, max = 64)
 	protected String street;
-	@Pattern(regexp = "\\d{2}-\\d{3}", message = "Niepoprawny format")
+	@Pattern(regexp = "^\\d{2}-\\d{3}$", message = "Niepoprawny format")
 	protected String postCode;
-//	@Digits(integer = 9, fraction = 0, message = "Niepoprawny format")
+	@Pattern(regexp = "^((\\d{3}[\\s\\-]?){3})|\\(?(\\d{2}\\)?[\\s\\-]?\\d{3}[\\s\\-]?(\\d{2}[\\s\\-]?){2})$",
+			message = "Niepoprawny format")
 	protected String phone;
 
 	protected Address() {}

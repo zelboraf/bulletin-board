@@ -27,42 +27,55 @@
                     <div class="form-section--column">
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Nazwa / imię i nazwisko <form:input type="text" path="name" value="Jan Kowalski"/></label>
-                            <form:errors path="name"/>
+                            <label>
+                                Nazwa / imię i nazwisko <form:input type="text" path="name" value="Jan Kowalski"/>
+                            </label>
+                            <form:errors path="name" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Ulica <form:input type="text" path="street" value="Kozia 1"/></label>
-                            <form:errors path="street"/>
+                            <label>
+                                Ulica <form:input type="text" path="street" value="Kozia 1"/>
+                            </label>
+                            <form:errors path="street" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Miasto <form:input type="text" path="city" value="Gdańsk"/></label>
-                            <form:errors path="city"/>
+                            <label>
+                                Miasto <form:input type="text" path="city" value="Gdańsk"/>
+                            </label>
+                            <form:errors path="city" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Kod pocztowy <form:input type="text" path="postCode" value="80-200"/>
-                                <form:errors path="postCode"/>
                             </label>
+                            <form:errors path="postCode" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Numer telefonu <form:input type="phone" path="phone" value="123 456 789"/>
                             </label>
+                            <form:errors path="phone" cssClass="error-message"/>
                         </div>
                     </div>
 
                     <div class="form-section--column">
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Data <form:input type="date" path="pickupDate" value="2019-05-01"/> </label>
+                            <label>
+                                Data <form:input type="date" path="pickupDate" value="2019-05-01"/>
+                            </label>
+                            <form:errors path="pickupDate" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Godzina <form:input type="time" path="pickupTime" value="12:34:00"/> </label>
+                            <label>
+                                Godzina <form:input type="time" path="pickupTime" value="12:34:00"/>
+                            </label>
+                            <form:errors path="pickupTime" cssClass="error-message"/>
                         </div>
 
                         <div class="form-group form-group--inline">
@@ -70,14 +83,10 @@
                                 Uwagi dla kuriera
                                 <form:textarea path="notice" rows="5"></form:textarea>
                             </label>
+                            <form:errors path="notice" cssClass="error-message"/>
                         </div>
                     </div>
                 </div>
-
-                <form:errors path="*"/>
-                <p class="error-message">
-                    ${sessionScope.errorMessage}
-                </p>
 
                 <div class="form-group form-group--buttons">
                     <input type="submit" class="btn prev-step" name="prev" value="Wstecz"/>
