@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@SessionAttributes("message")
 public class OrderController {
 
 	private final ItemInterface itemInterface;
@@ -24,6 +23,24 @@ public class OrderController {
 	private final OrganisationTypeInterface organisationTypeInterface;
 	private final OrderInterface orderInterface;
 	private final OrderService orderService;
+	private final MessageInterface messageInterface;
+
+
+	@ModelAttribute("message")
+	public Message setUpMessageForm() {
+		return new Message();
+	}
+
+	@PostMapping("/message")
+	public String postMessage(@Valid @ModelAttribute Message message, BindingResult result) {
+		if (result.hasErrors()) {
+			return "message_error";
+		}
+		message.setDateTime(LocalDateTime.now());
+		messageInterface.save(message);
+		return "message_sent";
+	}
+
 
 	@GetMapping("/")
 	public String getRoot() {
@@ -31,10 +48,12 @@ public class OrderController {
 	}
 
 	@GetMapping("/step1")
-	public String getStep1(Model model) {
+	public String getStep1(HttpSession session, Model model) {
 		model.addAttribute("items", itemInterface.findAll());
+		session.setAttribute("message", new Message());
 		return "step_1";
 	}
+
 	@PostMapping("/step1")
 	public String postStep1(HttpSession session,
 	                        @RequestParam(required = false) int[] selectedItemIds) {
@@ -54,10 +73,11 @@ public class OrderController {
 		}
 		return "step_2";
 	}
+
 	@PostMapping("/step2")
 	public String postStep2(HttpSession session,
 	                        @RequestParam(required = false) Integer numberOfBags,
-                            @RequestParam(required = false) String prev) {
+	                        @RequestParam(required = false) String prev) {
 		if (prev != null) {
 			return "redirect:/step1";
 		}
@@ -75,6 +95,7 @@ public class OrderController {
 		model.addAttribute("types", organisationTypeInterface.findAll());
 		return "step_3";
 	}
+
 	@PostMapping("/step3")
 	public String postStep3(HttpSession session,
 	                        @RequestParam String selectedCity,
@@ -104,6 +125,7 @@ public class OrderController {
 	public String getStep4() {
 		return "step_4";
 	}
+
 	@PostMapping("/step4")
 	public String postStep4(HttpSession session,
 	                        @RequestParam(required = false) Long organisationId,
@@ -125,6 +147,7 @@ public class OrderController {
 		model.addAttribute("order", new Order());
 		return "step_5";
 	}
+
 	@PostMapping("/step5")
 	public String postStep5(HttpSession session,
 	                        @Valid @ModelAttribute Order order, BindingResult result,
@@ -146,6 +169,7 @@ public class OrderController {
 	public String getStep6() {
 		return "step_6";
 	}
+
 	@PostMapping("/step6")
 	public String postStep6(HttpSession session,
 	                        @RequestParam(required = false) String prev) {
