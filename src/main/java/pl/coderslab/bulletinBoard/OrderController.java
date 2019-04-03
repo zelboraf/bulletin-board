@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@SessionAttributes("message")
+@SessionAttributes({"message", "order"})
 public class OrderController {
 
 	private final ItemInterface itemInterface;
@@ -25,6 +25,10 @@ public class OrderController {
 	private final OrderService orderService;
 	private final MessageInterface messageInterface;
 
+	@ModelAttribute("order")
+	public Order setUpOrderForm() {
+		return new Order();
+	}
 
 	@ModelAttribute("message")
 	public Message setUpMessageForm() {
@@ -41,16 +45,14 @@ public class OrderController {
 		return "message_sent";
 	}
 
-
 	@GetMapping("/")
 	public String getRoot() {
 		return "redirect:/step1";
 	}
 
 	@GetMapping("/step1")
-	public String getStep1(HttpSession session, Model model) {
+	public String getStep1(Model model) {
 		model.addAttribute("items", itemInterface.findAll());
-		session.setAttribute("message", new Message());
 		return "step_1";
 	}
 
