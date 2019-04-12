@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard;
+package pl.coderslab.bulletinBoard.form;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

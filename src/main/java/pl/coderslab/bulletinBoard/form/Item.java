@@ -1,6 +1,5 @@
-package pl.coderslab.bulletinBoard;
+package pl.coderslab.bulletinBoard.form;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

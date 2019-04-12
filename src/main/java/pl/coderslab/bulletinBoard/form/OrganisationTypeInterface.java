@@ -1,9 +1,6 @@
-package pl.coderslab.bulletinBoard;
+package pl.coderslab.bulletinBoard.form;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 public interface OrganisationTypeInterface extends JpaRepository<OrganisationType, Long> {
 

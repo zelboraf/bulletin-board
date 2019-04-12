@@ -16,7 +16,10 @@
     </div>
 
     <div class="form--steps-container">
+
         <div class="form--steps-counter">Krok <span>1</span>/5</div>
+
+
 
         <form action="/step1" method="post">
             <div data-step="1" class="active">
