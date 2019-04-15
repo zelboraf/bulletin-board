@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard.user;
+package pl.coderslab.bulletinBoard.security;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,5 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Role extends BaseEntity {
-
-
 
 }
