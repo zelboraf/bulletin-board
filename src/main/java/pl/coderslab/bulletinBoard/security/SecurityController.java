@@ -11,11 +11,11 @@ public class SecurityController {
 
 	private final UserService userService;
 
-	@GetMapping("/admin")
-	@ResponseBody
-	public String adminMapping() {
-		return  "Admin";
-	}
+//	@GetMapping("/admin")
+//	@ResponseBody
+//	public String adminMapping() {
+//		return  "Admin";
+//	}
 
 	@GetMapping("/admin")
 	@ResponseBody

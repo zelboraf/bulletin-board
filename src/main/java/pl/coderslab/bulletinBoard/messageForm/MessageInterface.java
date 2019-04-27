@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard.messageForm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

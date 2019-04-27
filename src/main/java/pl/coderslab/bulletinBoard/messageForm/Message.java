@@ -1,7 +1,8 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard.messageForm;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.coderslab.bulletinBoard.orderForm.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

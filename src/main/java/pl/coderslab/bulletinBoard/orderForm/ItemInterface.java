@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard.orderForm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

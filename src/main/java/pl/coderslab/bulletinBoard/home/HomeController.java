@@ -1,10 +1,13 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard.home;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.bulletinBoard.messageForm.Message;
+import pl.coderslab.bulletinBoard.messageForm.MessageInterface;
+import pl.coderslab.bulletinBoard.orderForm.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -15,8 +18,8 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@SessionAttributes({"message", "order"})
-public class OrderController {
+@SessionAttributes({"order", "message"})
+public class HomeController {
 
 	private final ItemInterface itemInterface;
 	private final OrganisationInterface organisationInterface;
@@ -24,11 +27,6 @@ public class OrderController {
 	private final OrderInterface orderInterface;
 	private final OrderService orderService;
 	private final MessageInterface messageInterface;
-
-	@ModelAttribute("order")
-	public Order setUpOrderForm() {
-		return new Order();
-	}
 
 	@ModelAttribute("message")
 	public Message setUpMessageForm() {
@@ -43,6 +41,11 @@ public class OrderController {
 		message.setDateTime(LocalDateTime.now());
 		messageInterface.save(message);
 		return "message_sent";
+	}
+
+	@ModelAttribute("order")
+	public Order setUpOrderForm() {
+		return new Order();
 	}
 
 	@GetMapping("/")

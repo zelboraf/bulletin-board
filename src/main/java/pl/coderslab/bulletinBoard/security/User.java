@@ -2,13 +2,13 @@ package pl.coderslab.bulletinBoard.security;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.coderslab.bulletinBoard.form.BaseEntity;
+import pl.coderslab.bulletinBoard.orderForm.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity//(name = "users")
-@Table(name = "admins")
+@Table(name = "users")
 @Getter
 @Setter
 public class User extends BaseEntity {

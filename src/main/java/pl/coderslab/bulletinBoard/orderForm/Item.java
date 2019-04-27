@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard.orderForm;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package pl.coderslab.bulletinBoard.form;
+package pl.coderslab.bulletinBoard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
